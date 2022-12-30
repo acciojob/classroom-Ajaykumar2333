@@ -25,13 +25,13 @@ public class StudentService {
         studentRepository.Pairing(Tname,Sname);
 
     }
-    public  Student getStudentbyyName(String sname){
+    public  Student getStudentName(String sname){
         return studentRepository.getStudentbyname(sname);
     }
-    public  Teacher getTeacherBynaaame(String Tname){
+    public  Teacher getTeachernaaame(String Tname){
         return  studentRepository.getStudentbyteacher(Tname);
     }
-    public List<String > getListOfstudentsbyTname(String Tname){
+    public List<String > getListOfTname(String Tname){
         return studentRepository.getStudentsByTname(Tname);
     }
     public List<String> getAllStudents(){
