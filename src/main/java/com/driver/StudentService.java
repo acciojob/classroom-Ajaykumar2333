@@ -7,44 +7,43 @@ import java.util.List;
 
 @Service
 public class StudentService {
-
     @Autowired
     StudentRepository studentRepository;
-
-
-    public void addStudent(Student student){
+    void addStudent(Student student){
         studentRepository.addStudent(student);
 
     }
-    public void addTeacher(Teacher teacher){
+    void addTeacher(Teacher teacher){
         studentRepository.addTeacher(teacher);
-
     }
 
-    public  void pair(String Tname, String Sname){
-        studentRepository.Pairing(Tname,Sname);
+    void addStudentTeacherPair(String studentName , String teacherName){
+        studentRepository.addStudentTeacherPair(studentName,teacherName);
+    }
 
+    Student getStudentByName(String studentName){
+        return studentRepository.getStudentByName(studentName);
     }
-    public  Student getStudentName(String sname){
-        return studentRepository.getStudentbyname(sname);
+
+
+    Teacher getTeacherByName(String teacherName){
+        return studentRepository.getTeacherByName(teacherName);
     }
-    public  Teacher getTeachernaaame(String Tname){
-        return  studentRepository.getStudentbyteacher(Tname);
+
+    List getStudentsByTeacherName(String teacherName){
+        return studentRepository.getStudentsByTeacherName(teacherName);
     }
-    public List<String > getListOfTname(String Tname){
-        return studentRepository.getStudentsByTname(Tname);
-    }
-    public List<String> getAllStudents(){
+
+
+    List getAllStudents(){
         return studentRepository.getAllStudents();
     }
-    public void  delete( String Tname){
-        studentRepository.deleteByTecherName(Tname);
-    }
-    public  void deleteAlll(){
-        studentRepository.deleteAll();
+
+    void deleteTeacherByName(String teacher){
+        studentRepository.deleteTeacherByName(teacher);
     }
 
-
-
-
+    void deleteAllTeachers(){
+        studentRepository.deleteAllTeachers();
+    }
 }
