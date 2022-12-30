@@ -7,37 +7,44 @@ import java.util.List;
 
 @Service
 public class StudentService {
+
     @Autowired
     StudentRepository studentRepository;
+
+
     public void addStudent(Student student){
         studentRepository.addStudent(student);
+
     }
     public void addTeacher(Teacher teacher){
         studentRepository.addTeacher(teacher);
-    }
-    public void addStudentTeacherPair(String student, String teacher){
-        studentRepository.addStudentTeacherPair(student, teacher);
-    }
-    public Student getStudentService(String studentName){
-        return studentRepository.getStudentFromDB(studentName);
+
     }
 
-    public Teacher getTeacherService(String teacherName){
-        return studentRepository.getTeacherFromDB(teacherName);
+    public  void pair(String Tname, String Sname){
+        studentRepository.Pairing(Tname,Sname);
+
+    }
+    public  Student getStudentbyyName(String sname){
+        return studentRepository.getStudentbyname(sname);
+    }
+    public  Teacher getTeacherBynaaame(String Tname){
+        return  studentRepository.getStudentbyteacher(Tname);
+    }
+    public List<String > getListOfstudentsbyTname(String Tname){
+        return studentRepository.getStudentsByTname(Tname);
+    }
+    public List<String> getAllStudents(){
+        return studentRepository.getAllStudents();
+    }
+    public void  delete( String Tname){
+        studentRepository.deleteByTecherName(Tname);
+    }
+    public  void deleteAlll(){
+        studentRepository.deleteAll();
     }
 
-    public List<String> getStudentsListService(String teacherName){
-        return studentRepository.getStudentsListFromDB(teacherName);
-    }
 
-    public List<String> getAllStudentsService(){
-        return studentRepository.getAllStudentsFromDB();
-    }
-    public void deleteTeacherStudentsService(String teacherName){
-        studentRepository.deleteTeacherStudentsFromDB(teacherName);
-    }
 
-    public void deleteAllTeacherStudentsService(){
-        studentRepository.deleteAllTeacherStudentsFromDB();
-    }
+
 }
