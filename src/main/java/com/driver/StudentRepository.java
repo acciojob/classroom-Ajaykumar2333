@@ -4,97 +4,74 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 @Repository
 public class StudentRepository {
 
+    HashMap<String, Student> studentMap;
+    HashMap<String, Teacher> teacherMap;
+    HashMap<String, List<String>> pairMap;
 
-    HashMap<String,Student> Smap = new HashMap<>(); //we are using hashmap bcz of time complexity
-    HashMap<String,Teacher> Tmap = new HashMap<>();
-
-    HashMap<String, List<String>> pairMap = new HashMap<>();
-
-
-
-
-
-    public  void addStudent(Student student){
-        String key = student.getName();
-        Smap.put(key,student);
+    public StudentRepository() {
+        this.studentMap = new HashMap<>();
+        this.teacherMap = new HashMap<>();
+        this.pairMap = new HashMap<>();
     }
 
-    public  void addTeacher(Teacher teacher){
-        String key = teacher.getName();
-        Tmap.put(key,teacher);
-
+    public void addStudent(Student student){
+        studentMap.put(student.getName(),student);
     }
-    public  void Pairing(String Tname, String Sname){
-
-
-        if(Smap.containsKey(Sname) && Tmap.containsKey(Tname)){
-            List<String> studentList = new ArrayList<>();
-            if(pairMap.containsKey(Tname))
-                studentList = pairMap.get(Tname);
-                studentList.add(Sname);
-                pairMap.put(Tname,studentList);
+    public void addTeacher(Teacher teacher){
+        teacherMap.put(teacher.getName(),teacher);
+    }
+    public void addStudentTeacherPair(String student, String teacher){
+        if(studentMap.containsKey(student) && teacherMap.containsKey(teacher)){
+            studentMap.put(student, studentMap.get(student));
+            teacherMap.put(teacher, teacherMap.get(teacher));
+            List<String> currentStudents = new ArrayList<String>();
+            if(pairMap.containsKey(teacher)) currentStudents = pairMap.get(teacher);
+            currentStudents.add(student);
+            pairMap.put(teacher, currentStudents);
         }
     }
-    public  Student getStudentbyname(String sNaam ){
-        if(Smap.containsKey(sNaam)){
-            Student student = Smap.get(sNaam);
-            return  student;
-        }else{
-            return null;
-        }
-    }
-    public  Teacher getStudentbyteacher(String TNaam){
-        if(Tmap.containsKey(TNaam)){
-            Teacher teacher = Tmap.get(TNaam);
-            return  teacher;
-        }else{
-            return null;
-        }
+    public Student getStudentFromDB(String studentName){
+        return studentMap.get(studentName);
     }
 
-  public List<String > getStudentsByTname(String Tname){
-      List<String > movieList = new ArrayList<>();
-        if(pairMap.containsKey(Tname))
-            movieList = pairMap.get(Tname);
-        return movieList;
+    public Teacher getTeacherFromDB(String teacherName){
+        return teacherMap.get(teacherName);
+    }
 
+    public List<String> getStudentsListFromDB(String teacherName){
+        List<String> studentsList = new ArrayList<String>();
+        if(pairMap.containsKey(teacherName)) studentsList = pairMap.get(teacherName);
+        return studentsList;
+    }
+    public List<String> getAllStudentsFromDB(){
+        return new ArrayList<>(studentMap.keySet());
+    }
 
-  }
-
-  public  List<String> getAllStudents(){
-      return  new ArrayList<>(Smap.keySet());
-  }
-  public void  deleteByTecherName(String Tname){
-      List<String > StdentList = new ArrayList<>();
-        if(pairMap.containsKey(Tname)){
-            StdentList = pairMap.get(Tname);
-        }
-        for(String student : StdentList){
-            if(Smap.containsKey(student)) {
-                Smap.remove(student);
+    public void deleteTeacherStudentsFromDB(String director){
+        List<String> students = new ArrayList<String>();
+        if(pairMap.containsKey(director)){
+            students = pairMap.get(director);
+            for(String movie: students){
+                if(studentMap.containsKey(movie)){
+                    studentMap.remove(movie);
+                }
             }
+
+            pairMap.remove(director);
         }
 
-        Tmap.remove(Tname);
-       if(pairMap.containsKey(Tname)){
-           pairMap.remove(Tname);
-       }
-  }
-  public void  deleteAll( ){
-        for(String student : pairMap.keySet()){
-            Smap.remove(student);
+        if(teacherMap.containsKey(director)){
+            teacherMap.remove(director);
         }
-        Tmap = new HashMap<>();
-        pairMap = new HashMap<>();
-
-
-  }
-
-
+    }
+    public void deleteAllTeacherStudentsFromDB(){
+        for(String teacherName:teacherMap.keySet()){
+            deleteTeacherStudentsFromDB(teacherName);
+        }
+    }
 }
